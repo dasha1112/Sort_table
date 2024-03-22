@@ -1,0 +1,10 @@
+^D:\LABA_ALG\SORT_TABLE\BUILD\CMAKEFILES\5C6B573B991BE059BE15895D8A322E82\GENERATE.STAMP.RULE
+setlocal
+D:\Downloads\bin\cmake.exe -SD:/Laba_alg/Sort_table -BD:/Laba_alg/Sort_table/build --check-stamp-list CMakeFiles/generate.stamp.list --vs-solution-file D:/Laba_alg/Sort_table/build/set.sln
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
