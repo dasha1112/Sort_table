@@ -148,9 +148,9 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
     </CustomBuild>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="D:\Laba_alg\Sort_table\src\TTable.cpp" />
+    <ClCompile Include="D:\Laba_alg\Sort_table\src\TSortTable.cpp" />
     <ClCompile Include="D:\Laba_alg\Sort_table\src\TTableIterator.cpp" />
-    <ClInclude Include="D:\Laba_alg\Sort_table\include\TTable.h" />
+    <ClInclude Include="D:\Laba_alg\Sort_table\include\TSortTable.h" />
     <ClInclude Include="D:\Laba_alg\Sort_table\include\TTableIterator.h" />
   </ItemGroup>
   <ItemGroup>

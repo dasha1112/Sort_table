@@ -1,16 +1,16 @@
-﻿#include "TTable.h"
+﻿#include "TSortTable.h"
 
 template <class TKEY, class TVAL>
-class TTable;
+class TSortTable;
 
 template <class TKEY, class TVAL>
-class TTableIterator : public TTable <TKEY, TVAL>
+class TTableIterator
 {
-public:
-	TTable<TKEY, TVAL>* table;
+protected:
+	TSortTable<TKEY, TVAL>* table;
 	int index;
 public:
-	TTableIterator(TTable<TKEY, TVAL>* _table, int _index) : table(_table), index(_index) {}
+	TTableIterator(TSortTable<TKEY, TVAL>* _table, int _index) : table(_table), index(_index) {}
 
 	TTableIterator& operator = (const TTableIterator& p)
 	{
@@ -42,5 +42,10 @@ public:
 	TVAL& operator* ()
 	{
 		return table->values[index];
+	}
+
+	int GetIndex() 
+	{
+		return index;
 	}
 };

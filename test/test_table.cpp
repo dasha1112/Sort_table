@@ -1,28 +1,20 @@
-#include "TTable.h"
 #include "TTableIterator.h"
+#include "TSortTable.h"
 #include "gtests.h"
+
 
 TEST(TTableConstructor, Constructor) // Тест конструктора
 {
-  TTable<int, double> table(5);
+  TSortTable<int, double> table(5);
   int a = table.GetSize();
   int b = table.GetCount();
   EXPECT_EQ(5, a);
   EXPECT_EQ(0, b);
 }
 
-TEST(TTableConstructor, Push) // Тест конструктора
+TEST(TTableTest, CopyConstructor) // Тест на конструктор копирования 1
 {
-  TTable<int, double> table(5);
-  int a = table.GetSize();
-  int b = table.GetCount();
-  EXPECT_EQ(5, a);
-  EXPECT_EQ(0, b);
-}
-
-TEST(TTableTest, CopyConstructor) // Тест на метод Push()
-{
-  TTable<int, double> table(5);
+  TSortTable<int, double> table(5);
   table.Push(1, 23);
   table.Push(2, 56);
   int key = 1;
@@ -35,28 +27,30 @@ TEST(TTableTest, CopyConstructor) // Тест на метод Push()
 
 TEST(TTableConstructor, CopyConstructor2) // Тест конструктора копирования 2
 {
-  TTable<int, int> table(5);
+  TSortTable<int, int> table(5);
   table.Push(1, 23);
   table.Push(2, 56);
-  TTable<int, int> table1(table);
+  TSortTable<int, int> table1(table);
   EXPECT_EQ(5, table1.GetSize());
   EXPECT_EQ(2, table1.GetCount());
 }
 
 TEST(TTableTest, DestructorTest) // Тест деструктора
 {
-  TTable<int, int> table (5);
+  TSortTable<int, int> table (5);
   table.Push(1, 123);
   table.Push(2, 456);
   int count = table.GetCount();
-  table.~TTable();
+  table.~TSortTable();
   EXPECT_EQ(2, count);
   EXPECT_EQ(0, table.GetCount());
 }
 
 TEST(TTableTest, IndexOperatorTest) // Тест оператора []
 {
-  TTable<int, int> table(5);
+  TSortTable<int, int> table(10);
+  table.Push(3, 832);
+  table.Push(5, 702);
   table.Push(1, 123);
   table.Push(2, 456);
   int key = 1;
@@ -67,18 +61,23 @@ TEST(TTableTest, IndexOperatorTest) // Тест оператора []
 
 TEST(TTableTest, FindTest) // Тест метода Find()
 {
-  TTable<int, int> table(5);
-  table.Push(1, 123);
+  TSortTable<int, int> table;
+  table.Push(9, 123);
+  table.Push(3, 304);
+  table.Push(8, 102);
+  table.Push(39, 1034);
   table.Push(2, 456);
-  int key = 1;
-  int key2 = 2;
-  EXPECT_EQ(123, table.Find(key));
-  EXPECT_EQ(456, table.Find(key2));
+  table.Push(28, 1063);
+  table.Push(1, 145);
+  int key = 8;
+  int key2 = 9;
+  EXPECT_EQ(102, table.Find(key));
+  EXPECT_EQ(123, table.Find(key2)); 
 }
 
 TEST(TTableTest, DelTest) // Тест метода Del()
 {
-  TTable<int, int> table;
+  TSortTable<int, int> table;
   table.Push(1, 123);
   table.Push(2, 456);
   int key1 = 1;
@@ -90,7 +89,7 @@ TEST(TTableTest, DelTest) // Тест метода Del()
 
 TEST(TTableTest, DelExceptionTest) // Тест на обработку исключения в методе Del()
 {
-  TTable<int, int> table;
+  TSortTable<int, int> table;
   table.Push(1, 123);
   int key1 = 2;
   bool exceptionThrown = false;
@@ -106,7 +105,7 @@ TEST(TTableTest, DelExceptionTest) // Тест на обработку исключения в методе Del(
 
 TEST(TTableTest, ResizeTest) // Тест метода Resize()
 {
-  TTable<int, int> table;
+  TSortTable<int, int> table;
   table.Push(1, 123);
   table.Push(2, 456);
   int key1 = 1;
@@ -119,29 +118,29 @@ TEST(TTableTest, ResizeTest) // Тест метода Resize()
 
 TEST(TTableIteratorTest, ProstoTest) // Тест на конструктор итератора
 {
-  TTable<int, int> table;
+  TSortTable<int, int> table;
   table.Push(1, 123);
   table.Push(2, 456);
   TTableIterator<int, int> iterator(&table, 0);
-  EXPECT_EQ(0, iterator.index);
+  EXPECT_EQ(0, iterator.GetIndex());
 }
 
 TEST(TTableIteratorTest, AssignmentOperatorTest) // Тест на оператор =
 {
-  TTable<int, int> table1;
+  TSortTable<int, int> table1;
   table1.Push(1, 123);
-  TTable<int, int> table2;
+  TSortTable<int, int> table2;
   table2.Push(2, 456);
   TTableIterator<int, int> iterator1(&table1, 0);
   TTableIterator<int, int> iterator2(&table2, 0);
   iterator2 = iterator1;
-  EXPECT_EQ(iterator1.index, iterator2.index);
-  EXPECT_EQ(iterator1.table, iterator2.table);
+  EXPECT_EQ(iterator1.GetIndex(), iterator2.GetIndex());
+  EXPECT_EQ(iterator1.GetIndex(), iterator2.GetIndex());
 }
 
 TEST(TTableIteratorTest, InequalityOperatorTest) // Тест на оператор !=
 {
-  TTable<int, int> table;
+  TSortTable<int, int> table;
   table.Push(1, 123);
   table.Push(2, 456);
   TTableIterator<int, int> iterator1(&table, 0);
@@ -151,7 +150,7 @@ TEST(TTableIteratorTest, InequalityOperatorTest) // Тест на оператор !=
 
 TEST(TTableIteratorTest, EqualityOperatorTest) // Тест на оператор ==
 {
-  TTable<int, int> table;
+  TSortTable<int, int> table;
   table.Push(1, 123);
   TTableIterator<int, int> iterator1(&table, 0);
   TTableIterator<int, int> iterator2(&table, 0);
@@ -160,18 +159,18 @@ TEST(TTableIteratorTest, EqualityOperatorTest) // Тест на оператор ==
 
 TEST(TTableIteratorTest, IncrementOperatorTest) // Тест на оператор ++
 {
-  TTable<int, int> table;
+  TSortTable<int, int> table;
   table.Push(1, 123);
   TTableIterator<int, int> iterator(&table, 0);
   TTableIterator<int, int> original_iterator = iterator;
   ++iterator;
-  int expected_index = original_iterator.index + 1;
-  EXPECT_EQ(iterator.index, expected_index);
+  int expected_index = original_iterator.GetIndex() + 1;
+  EXPECT_EQ(iterator.GetIndex(), expected_index);
 }
 
 TEST(TTableIteratorTest, DereferenceOperatorTest) // Тест на оператор *
 {
-  TTable<int, int> table;
+  TSortTable<int, int> table;
   table.Push(1, 123);
   TTableIterator<int, int> iterator(&table, 0);
   int& value = *iterator;
